@@ -1,0 +1,28 @@
+name: Run Jewelry Data Collection
+
+on:
+  workflow_dispatch:  # только ручной запуск
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install selenium webdriver-manager openpyxl requests
+
+    - name: Run script
+      run: |
+        Xvfb :99 &  # Виртуальный дисплей для Chrome
+        export DISPLAY=:99
+        python collect_jewelry_data.py
